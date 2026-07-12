@@ -219,7 +219,7 @@
                 elementos = elementos.filter(e => e.Zona === filtroZona || e.Ubicación?.includes(filtroZona));
                 titulo.innerText = `Filtrado ${tipo === 'edificios' ? 'Edificaciones' : 'Obras'} - ${filtroZona}`;
             } else {
-                titulo.innerText = tipo === 'edificios' ? `Catálogo de Edificaciones CUC Real (${elementos.length})` : `Inventario Real de Obras de Arte (${elementos.length})`;
+                titulo.innerText = tipo === 'edificios' ? `Catálogo de Edificaciones CUC (${elementos.length})` : `Obras de Arte (${elementos.length})`;
             }
 
             elementos.forEach(item => {
