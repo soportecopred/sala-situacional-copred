@@ -19,11 +19,9 @@
     <!-- BARRA DE CONTROL SUPERIOR (IDENTIDAD UCV / COPRED) -->
     <header class="flex justify-between items-center border-b border-blue-900/40 pb-4 mb-4">
         <div class="flex items-center gap-4">
-            <!-- Espacio para el Logo de COPRED -->
             <div class="w-16 h-16 bg-slate-950 border border-blue-900/30 rounded-lg flex items-center justify-center p-1 overflow-hidden shrink-0">
                 <img id="logo-copred" src="logo-copred.png" alt="Logo COPRED" onerror="this.src='https://placehold.co/150x150/1e3a8a/ffffff?text=COPRED'" class="w-full h-full object-contain">
             </div>
-            
             <div>
                 <div class="flex items-center gap-3">
                     <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
@@ -33,11 +31,10 @@
             </div>
         </div>
         
-        <!-- Botones de Navegación -->
         <div id="nav-buttons" class="flex gap-2">
             <button onclick="navigateTo('principal')" class="px-4 py-1.5 rounded bg-blue-700 text-xs font-bold uppercase tracking-wider text-white hover:bg-blue-600 cursor-pointer transition">Inicio (Vista General)</button>
-            <button onclick="openSubmenu('edificios')" class="px-4 py-1.5 rounded bg-slate-950 border border-blue-900/40 text-xs font-bold text-slate-300 hover:bg-slate-800 cursor-pointer transition">Edificaciones (80)</button>
-            <button onclick="openSubmenu('obras')" class="px-4 py-1.5 rounded bg-slate-950 border border-blue-900/40 text-xs font-bold text-slate-300 hover:bg-slate-800 cursor-pointer transition">Obras de Arte (109)</button>
+            <button onclick="openSubmenu('edificios')" class="px-4 py-1.5 rounded bg-slate-950 border border-blue-900/40 text-xs font-bold text-slate-300 hover:bg-slate-800 cursor-pointer transition">Edificaciones</button>
+            <button onclick="openSubmenu('obras')" class="px-4 py-1.5 rounded bg-slate-950 border border-blue-900/40 text-xs font-bold text-slate-300 hover:bg-slate-800 cursor-pointer transition">Obras de Arte</button>
         </div>
 
         <div class="text-right">
@@ -48,8 +45,7 @@
 
     <!-- PANTALLA 1: PRINCIPAL -->
     <main id="pantalla-principal" class="grid grid-cols-5 gap-6 flex-1 min-h-0">
-        
-        <!-- IZQUIERDA: Estadísticas de Intervención Patrimonial -->
+        <!-- GRÁFICOS DE PROGRESO REAL -->
         <div class="col-span-2 flex flex-col gap-4">
             <div class="bg-slate-950/60 border border-blue-950 rounded-xl p-4 flex flex-col flex-1 min-h-0">
                 <h2 class="text-xs font-bold text-blue-300 uppercase tracking-wide mb-2 text-center">Nivel de Intervención: Edificaciones</h2>
@@ -65,7 +61,7 @@
             </div>
         </div>
 
-        <!-- DERECHA: Mapa Interactivo -->
+        <!-- MAPA INTERACTIVO -->
         <div class="col-span-3 bg-slate-950/40 border border-blue-950 rounded-xl p-5 flex flex-col min-h-0 justify-between">
             <div>
                 <h2 class="text-lg font-bold text-slate-200">Zonas de Gestión Patrimonial (Complejo Villanueva)</h2>
@@ -74,19 +70,17 @@
 
             <div class="flex-1 flex items-center justify-center p-4">
                 <svg viewBox="0 0 500 300" class="w-full max-h-[350px]">
-                    <!-- Cambiados a tonos azules, grises y ocres patrimoniales -->
-                    <path class="zona-silueta fill-blue-900/40 stroke-blue-700 stroke-2" d="M50,50 L200,50 L200,150 L50,150 Z" onclick="filterByZona('Zona Central / Rectorado')" />
+                    <path class="zona-silueta fill-blue-900/40 stroke-blue-700 stroke-2" d="M50,50 L200,50 L200,150 L50,150 Z" onclick="filterByZona('Zona Central')" />
                     <text x="70" y="100" fill="#93c5fd" class="text-xs font-bold pointer-events-none">Zona Central</text>
 
-                    <path class="zona-silueta fill-slate-800/60 stroke-slate-600 stroke-2" d="M220,50 L450,50 L450,130 L220,130 Z" onclick="filterByZona('Complejo de Estadios')" />
+                    <path class="zona-silueta fill-slate-800/60 stroke-slate-600 stroke-2" d="M220,50 L450,50 L450,130 L220,130 Z" onclick="filterByZona('Estadios')" />
                     <text x="300" y="90" fill="#cbd5e1" class="text-xs font-bold pointer-events-none">Estadios</text>
 
-                    <path class="zona-silueta fill-amber-950/30 stroke-amber-800/60 stroke-2" d="M50,160 L450,160 L450,270 L50,270 Z" onclick="filterByZona('Zona Sur / Médica / Ciencias')" />
-                    <text x="220" y="220" fill="#fcd34d" class="text-xs font-bold pointer-events-none">Zona Sur y Complejo Médico</text>
+                    <path class="zona-silueta fill-amber-950/30 stroke-amber-800/60 stroke-2" d="M50,160 L450,160 L450,270 L50,270 Z" onclick="filterByZona('Zona Sur')" />
+                    <text x="220" y="220" fill="#fcd34d" class="text-xs font-bold pointer-events-none">Zona Sur y Médica</text>
                 </svg>
             </div>
 
-            <!-- Leyenda Técnica Nueva -->
             <div class="flex justify-center gap-6 text-xs font-medium border-t border-blue-950 pt-3 text-slate-400">
                 <div class="flex items-center gap-2"><span class="w-3 h-3 bg-amber-600 rounded"></span> Prioridad I (Urgente / Riesgo VUE)</div>
                 <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-600 rounded"></span> Prioridad II (Estabilización)</div>
@@ -95,7 +89,7 @@
         </div>
     </main>
 
-    <!-- PANTALLA 2: LISTADOS -->
+    <!-- PANTALLA 2: LISTADOS DINÁMICOS -->
     <main id="pantalla-lista" class="hidden flex-1 flex flex-col min-h-0 bg-slate-950/60 border border-blue-950 rounded-xl p-5">
         <div class="flex justify-between items-center mb-4">
             <div>
@@ -106,7 +100,7 @@
         <div id="lista-contenedor" class="flex-1 overflow-y-auto grid grid-cols-4 gap-3 pr-2"></div>
     </main>
 
-    <!-- PANTALLA 3: FICHA TÉCNICA PATRIMONIAL -->
+    <!-- PANTALLA 3: FICHA TÉCNICA REAL -->
     <main id="pantalla-ficha" class="hidden grid grid-cols-3 gap-6 flex-1 min-h-0">
         <div class="col-span-2 bg-slate-950/60 border border-blue-950 rounded-xl p-6 flex flex-col min-h-0">
             <div class="flex justify-between items-start border-b border-blue-900/30 pb-3 mb-4">
@@ -119,7 +113,7 @@
 
             <div class="flex-1 overflow-y-auto space-y-4 pr-2 text-sm text-slate-300">
                 <div class="grid grid-cols-2 gap-4 bg-slate-900/80 p-4 rounded-xl border border-blue-950">
-                    <div><strong class="text-slate-400">Evaluador COPRED:</strong> <span id="form-inspector">-</span></div>
+                    <div><strong class="text-slate-400">Evaluador / Inspector:</strong> <span id="form-inspector">-</span></div>
                     <div><strong class="text-slate-400">Fecha de Inspección:</strong> <span id="form-fecha">-</span></div>
                     <div><strong class="text-slate-400">Ubicación en Campus:</strong> <span id="form-ubicacion">-</span></div>
                     <div><strong class="text-slate-400">Prioridad de Intervención:</strong> <span id="form-gravedad" class="font-bold">-</span></div>
@@ -138,7 +132,71 @@
     </main>
 
     <script>
+        // PEGA TUS ENLACES DE GOOGLE SHEETS AQUÍ ADENTRO:
+        const URL_EDIFICIOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdhmSIkggf9d5nLKuX2zYZpDxQDZXz_GLUGXYy35p-YfUiyIoenzpZo9ZucGUtEKGS4A_oAB3tRpLi/pub?gid=0&single=true&output=csv';
+        const URL_OBRAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdhmSIkggf9d5nLKuX2zYZpDxQDZXz_GLUGXYy35p-YfUiyIoenzpZo9ZucGUtEKGS4A_oAB3tRpLi/pub?gid=873355603&single=true&output=csv';
+
+        let baseDatos = { edificios: [], obras: [] };
+        let chartE, chartO;
+
         setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
+
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            return lines.slice(1).filter(line => line.trim() !== '').map(line => {
+                const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/"/g, ''));
+                let obj = {};
+                headers.forEach((header, i) => obj[header] = values[i] || '');
+                return obj;
+            });
+        }
+
+        async function cargarDatos() {
+            try {
+                const resEdificios = await fetch(URL_EDIFICIOS);
+                const textEdificios = await resEdificios.text();
+                baseDatos.edificios = parseCSV(textEdificios);
+
+                const resObras = await fetch(URL_OBRAS);
+                const textObras = await resObras.text();
+                baseDatos.obras = parseCSV(textObras);
+
+                actualizarGraficos();
+            } catch (error) {
+                console.error("Error cargando sincronización de Sheets:", error);
+            }
+        }
+
+        function obtenerConteoPrioridades(lista) {
+            let counts = { 'Prioridad I': 0, 'Prioridad II': 0, 'Prioridad III': 0 };
+            lista.forEach(item => {
+                if(counts[item.Prioridad] !== undefined) counts[item.Prioridad]++;
+                else counts['Prioridad III']++; // Failsafe
+            });
+            return [counts['Prioridad I'], counts['Prioridad II'], counts['Prioridad III']];
+        }
+
+        function actualizarGraficos() {
+            const dataEdif = obtenerConteoPrioridades(baseDatos.edificios);
+            const dataObras = obtenerConteoPrioridades(baseDatos.obras);
+            const palette = ['#d97706', '#2563eb', '#475569'];
+
+            if(chartE) chartE.destroy();
+            if(chartO) chartO.destroy();
+
+            chartE = new Chart(document.getElementById('chartEdificios').getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: ['Prioridad I', 'Prioridad II', 'Prioridad III'], datasets: [{ data: dataEdif, backgroundColor: palette, borderColor: '#020617' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } } }
+            });
+
+            chartO = new Chart(document.getElementById('chartObras').getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: ['Prioridad I', 'Prioridad II', 'Prioridad III'], datasets: [{ data: dataObras, backgroundColor: palette, borderColor: '#020617' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } } }
+            });
+        }
 
         function navigateTo(pantalla) {
             document.getElementById('pantalla-principal').classList.add('hidden');
@@ -149,73 +207,66 @@
             if(pantalla === 'ficha') document.getElementById('pantalla-ficha').classList.remove('hidden');
         }
 
-        function openSubmenu(tipo) {
+        function openSubmenu(tipo, filtroZona = null) {
             navigateTo('lista');
             const titulo = document.getElementById('lista-titulo');
             const contenedor = document.getElementById('lista-contenedor');
             contenedor.innerHTML = '';
 
-            if (tipo === 'edificios') {
-                titulo.innerText = "Catálogo de Edificaciones CUC (Modelos Estructurales)";
-                for(let i=1; i<=80; i++) {
-                    contenedor.innerHTML += `
-                        <div onclick="verFichaDetail('Edificación Universitaria N° ${i}', 'Estructura CUC', 'Prioridad III')" class="p-3 bg-slate-900/60 border border-blue-950/60 rounded-lg cursor-pointer hover:border-blue-500 transition">
-                            <h4 class="font-bold text-slate-200 text-xs truncate">Edificio N° ${i}</h4>
-                            <p class="text-[10px] text-slate-500 mt-1">Estructura de Concreto Armado</p>
-                        </div>`;
-                }
+            let elementos = tipo === 'edificios' ? baseDatos.edificios : baseDatos.obras;
+            
+            if(filtroZona) {
+                elementos = elementos.filter(e => e.Zona === filtroZona || e.Ubicación?.includes(filtroZona));
+                titulo.innerText = `Filtrado ${tipo === 'edificios' ? 'Edificaciones' : 'Obras'} - ${filtroZona}`;
             } else {
-                titulo.innerText = "Inventario de Obras de Arte Integradas (109)";
-                for(let i=1; i<=109; i++) {
-                    contenedor.innerHTML += `
-                        <div onclick="verFichaDetail('Obra de Arte N° ${i}', 'Patrimonio Integrado', 'Prioridad II')" class="p-3 bg-slate-900/60 border border-blue-950/60 rounded-lg cursor-pointer hover:border-blue-500 transition">
-                            <h4 class="font-bold text-slate-200 text-xs truncate">Obra N° ${i}</h4>
-                            <p class="text-[10px] text-slate-400 mt-1">Síntesis de las Artes</p>
-                        </div>`;
-                }
+                titulo.innerText = tipo === 'edificios' ? `Catálogo de Edificaciones CUC Real (${elementos.length})` : `Inventario Real de Obras de Arte (${elementos.length})`;
+            }
+
+            elementos.forEach(item => {
+                let borderCol = item.Prioridad === 'Prioridad I' ? 'border-amber-600' : (item.Prioridad === 'Prioridad II' ? 'border-blue-600' : 'border-blue-950');
+                contenedor.innerHTML += `
+                    <div onclick="verFichaDetail('${item.ID}', '${item.Nombre}', '${tipo}', '${item.Prioridad}')" class="p-3 bg-slate-900/60 border ${borderCol} rounded-lg cursor-pointer hover:bg-slate-800 transition">
+                        <span class="text-[9px] uppercase font-bold text-slate-400 block">${item.ID}</span>
+                        <h4 class="font-bold text-slate-200 text-xs truncate mt-0.5">${item.Nombre}</h4>
+                        <p class="text-[10px] text-slate-500 mt-1">${item.Zona || item.Ubicación || 'Campus CUC'}</p>
+                    </div>`;
+            });
+        }
+
+        function verFichaDetail(id, nombre, tipo, prioridad) {
+            navigateTo('ficha');
+            const items = tipo === 'edificios' ? baseDatos.edificios : baseDatos.obras;
+            const item = items.find(e => e.ID === id);
+
+            document.getElementById('ficha-nombre').innerText = `[${item.ID}] ${item.Nombre}`;
+            document.getElementById('ficha-tipo-badge').innerText = `Categoría Patrimonial: ${tipo === 'edificios' ? 'Estructura CUC' : 'Patrimonio Integrado'}`;
+            document.getElementById('btn-regresar-lista').setAttribute('onclick', `openSubmenu('${tipo}')`);
+            
+            document.getElementById('form-inspector').innerText = item.Evaluador || "Técnico COPRED";
+            document.getElementById('form-fecha').innerText = item.Fecha || "No evaluado";
+            document.getElementById('form-ubicacion').innerText = item.Zona || item.Ubicación || "Campus CUC";
+            document.getElementById('form-gravedad').innerText = prioridad;
+            
+            let colorPrioridad = prioridad === 'Prioridad I' ? 'text-amber-500' : (prioridad === 'Prioridad II' ? 'text-blue-400' : 'text-slate-400');
+            document.getElementById('form-gravedad').className = `font-bold ${colorPrioridad}`;
+            
+            document.getElementById('form-descripcion').innerText = item.Diagnostico || "Sin comentarios o patologías registradas en la hoja de control.";
+
+            const galeria = document.getElementById('ficha-galeria');
+            if(item.Link_Foto && item.Link_Foto.startsWith('http')) {
+                galeria.innerHTML = `<img src="${item.Link_Foto}" class="w-full rounded-lg border border-blue-950 object-cover aspect-video hover:scale-105 transition duration-300">`;
+            } else {
+                galeria.innerHTML = `<p class="text-xs text-slate-500 text-center py-8">No se ha asociado un enlace válido de imagen en la columna Link_Foto.</p>`;
             }
         }
 
-        function verFichaDetail(nombre, tipo, prioridad) {
-            navigateTo('ficha');
-            document.getElementById('ficha-nombre').innerText = nombre;
-            document.getElementById('ficha-tipo-badge').innerText = `Categoría Patrimonial: ${tipo}`;
-            document.getElementById('btn-regresar-lista').setAttribute('onclick', `openSubmenu('${tipo === 'Estructura CUC' ? 'edificios' : 'obras'}')`);
-            
-            document.getElementById('form-inspector').innerText = "Personal Técnico COPRED";
-            document.getElementById('form-fecha').innerText = "Pendiente de Sincronización Google Sheets";
-            document.getElementById('form-ubicacion').innerText = "Campus CUC - UCV";
-            document.getElementById('form-gravedad').innerText = prioridad + " (Por definir en campo)";
-            document.getElementById('form-descripcion').innerText = "Los datos descriptivos de patologías estructurales y afectación del concreto se cargarán dinámicamente desde el formulario en la siguiente fase.";
-            document.getElementById('ficha-galeria').innerHTML = `<p class="text-xs text-slate-500 text-center py-8">Las imágenes vinculadas a Drive aparecerán aquí.</p>`;
-        }
-
         function filterByZona(zona) {
-            alert(`Filtrando base de datos patrimonial: ${zona}`);
+            // Permite filtrar haciendo clic directo en el mapa conceptual
+            openSubmenu('edificios', zona);
         }
 
-        // Gráficos con paleta institucional corporativa/patrimonial
-        const bluePalette = ['#1e3a8a', '#3b82f6', '#64748b'];
-        
-        const ctxEdif = document.getElementById('chartEdificios').getContext('2d');
-        new Chart(ctxEdif, {
-            type: 'doughnut',
-            data: {
-                labels: ['Prioridad I', 'Prioridad II', 'Prioridad III'],
-                datasets: [{ data: [5, 15, 60], backgroundColor: bluePalette, borderColor: '#020617' }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } } }
-        });
-
-        const ctxObras = document.getElementById('chartObras').getContext('2d');
-        new Chart(ctxObras, {
-            type: 'doughnut',
-            data: {
-                labels: ['Prioridad I', 'Prioridad II', 'Prioridad III'],
-                datasets: [{ data: [8, 22, 79], backgroundColor: bluePalette, borderColor: '#020617' }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } } }
-        });
+        // Carga Inicial de Datos vivos
+        window.onload = cargarDatos;
     </script>
 </body>
 </html>
