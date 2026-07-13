@@ -134,9 +134,9 @@
         </div>
     </main>
 
-    <script>
+<script>
         // =========================================================================
-        // REPLACE THESE TWO LINKS WITH YOUR PUBLIC GOOGLE SHEETS CSV LINKS:
+        // ENLACES PÚBLICOS DE GOOGLE SHEETS EN FORMATO CSV:
         // =========================================================================
         const URL_EDIFICIOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdhmSIkggf9d5nLKuX2zYZpDxQDZXz_GLUGXYy35p-YfUiyIoenzpZo9ZucGUtEKGS4A_oAB3tRpLi/pub?gid=0&single=true&output=csv';
         const URL_OBRAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdhmSIkggf9d5nLKuX2zYZpDxQDZXz_GLUGXYy35p-YfUiyIoenzpZo9ZucGUtEKGS4A_oAB3tRpLi/pub?gid=873355603&single=true&output=csv';
@@ -148,18 +148,21 @@
         // Reloj en tiempo real
         setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
 
-        // Parser de CSV robusto con limpieza de retornos de carro (\r)
+        // Parser de CSV robusto (Soporta retornos de carro \r y limpia BOM invisible)
         function parseCSV(text) {
-            const lines = text.split('\n');
+            // Reemplaza los saltos de línea de Windows (\r\n) por estándar (\n)
+            const cleanText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+            const lines = cleanText.split('\n');
+            
             if (lines.length === 0 || lines[0].trim() === '') return [];
             
-            // Limpiar encabezados de comillas y espacios residuales
-            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            // Limpiar encabezados: quita comillas, espacios y el carácter invisible BOM (\ufeff)
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').replace(/^\uFEFF/, ''));
             
             return lines.slice(1).filter(line => line.trim() !== '').map(line => {
-                // Regex para separar por comas respetando contenidos entre comillas
+                // Regex avanzado para separar por comas respetando celdas con texto entre comillas
                 const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => {
-                    return v.trim().replace(/^"|"$/g, '').replace(/\r$|\\r$/g, ''); // Remueve el quiebre de línea de Windows
+                    return v.trim().replace(/^"|"$/g, '');
                 });
                 
                 let obj = {};
@@ -172,7 +175,7 @@
 
         async function cargarDatos() {
             try {
-                // Ralentizar el video a la mitad de su velocidad (2x más lento)
+                // Ajustar velocidad del video
                 const video = document.getElementById('video-campus');
                 if (video) {
                     video.playbackRate = 0.5;
@@ -199,6 +202,7 @@
         function obtenerConteoPrioridades(lista) {
             let counts = { 'Prioridad I': 0, 'Prioridad II': 0, 'Prioridad III': 0 };
             lista.forEach(item => {
+                // Limpieza preventiva por si hay espacios extras en las celdas del Sheets
                 let p = item.Prioridad ? item.Prioridad.trim() : 'Prioridad III';
                 if(counts[p] !== undefined) counts[p]++;
                 else counts['Prioridad III']++;
@@ -210,7 +214,6 @@
             const dataEdif = obtenerConteoPrioridades(baseDatos.edificios);
             const dataObras = obtenerConteoPrioridades(baseDatos.obras);
             
-            // Paleta COPRED: Ocre crítico, Azul UCV consolidado, Gris técnico estable
             const palette = ['#b45309', '#1d4ed8', '#475569'];
 
             if(chartE) chartE.destroy();
@@ -254,8 +257,9 @@
             titulo.innerText = tipo === 'edificios' ? `Catálogo de Estructuras del Campus (${elementos.length})` : `Inventario de Patrimonio Integrado (${elementos.length})`;
 
             elementos.forEach(item => {
-                let borderCol = item.Prioridad === 'Prioridad I' ? 'border-amber-700/60 bg-amber-950/10' : (item.Prioridad === 'Prioridad II' ? 'border-blue-700/60 bg-blue-950/10' : 'border-slate-800 bg-slate-900/40');
-                let indicator = item.Prioridad === 'Prioridad I' ? 'bg-amber-600' : (item.Prioridad === 'Prioridad II' ? 'bg-blue-600' : 'bg-slate-600');
+                let p = item.Prioridad ? item.Prioridad.trim() : 'Prioridad III';
+                let borderCol = p === 'Prioridad I' ? 'border-amber-700/60 bg-amber-950/10' : (p === 'Prioridad II' ? 'border-blue-700/60 bg-blue-950/10' : 'border-slate-800 bg-slate-900/40');
+                let indicator = p === 'Prioridad I' ? 'bg-amber-600' : (p === 'Prioridad II' ? 'bg-blue-600' : 'bg-slate-600');
                 let ubicacionTexto = item.Zona || item.Ubicación || 'Complejo CUC';
                 
                 contenedor.innerHTML += `
@@ -275,6 +279,11 @@
             const items = tipo === 'edificios' ? baseDatos.edificios : baseDatos.obras;
             const item = items.find(e => e.ID === id);
 
+            if (!item) {
+                console.error("No se encontró el elemento con ID:", id);
+                return;
+            }
+
             document.getElementById('ficha-nombre').innerText = `[${item.ID}] ${item.Nombre}`;
             document.getElementById('ficha-tipo-badge').innerText = `Categoría Estructural: ${tipo === 'edificios' ? 'Estructura CUC / Villanueva' : 'Síntesis de las Artes Integrada'}`;
             document.getElementById('btn-regresar-lista').setAttribute('onclick', `openSubmenu('${tipo}')`);
@@ -291,8 +300,8 @@
             document.getElementById('form-descripcion').innerText = item.Diagnostico || "No se han vaciado notas patológicas en la celda correspondiente de la base de datos de control.";
 
             const galeria = document.getElementById('ficha-galeria');
-            if(item.Link_Foto && item.Link_Foto.startsWith('http')) {
-                galeria.innerHTML = `<img src="${item.Link_Foto}" class="w-full h-full max-h-[300px] rounded-xl object-cover border border-blue-950/40 shadow-inner">`;
+            if(item.Link_Foto && item.Link_Foto.trim().startsWith('http')) {
+                galeria.innerHTML = `<img src="${item.Link_Foto.trim()}" class="w-full h-full max-h-[300px] rounded-xl object-cover border border-blue-950/40 shadow-inner">`;
             } else {
                 galeria.innerHTML = `<p class="text-[11px] text-slate-500 font-medium text-center">Falta registro fotográfico de daño en la columna Link_Foto del Sheets.</p>`;
             }
